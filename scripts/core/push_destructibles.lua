@@ -76,7 +76,14 @@ hero_meta:register_event("on_state_changing", function(self, state_name, next_st
         pushable = true,
         pullable = false
       })
+      object.moving = false
       object.reverted = false
+      object.is_moving = function(self)
+        return self.moving
+      end
+      object.set_moving = function(self, moving)
+        self.moving = moving == nil or moving
+      end
       object.is_reverted = function(self)
         return self.reverted
       end
@@ -96,7 +103,11 @@ hero_meta:register_event("on_state_changing", function(self, state_name, next_st
           hero:set_pushed_object(nil)
         end
       end)
+      object:register_event("on_moving", function(self)
+        self:set_moving()
+      end)
       object:register_event("on_moved", function(self)
+        self:set_moving(false)
         if hero:get_state() ~= "pushing" then
           self:revert_to_entity()
           self:remove()
@@ -109,7 +120,7 @@ hero_meta:register_event("on_state_changing", function(self, state_name, next_st
     end
   elseif state_name == "pushing" then
     local object = self:get_pushed_object()
-    if object then
+    if object and not object:is_moving() then
       object:revert_to_entity()
       object:remove()
       self:set_pushed_object(nil)

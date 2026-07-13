@@ -79,6 +79,14 @@ game_meta:register_event("on_started", function(self)
   self.simulated_attack = {}
   self:set_command_keyboard_binding("action", nil)
   self:set_command_keyboard_binding("attack", nil)
+  self:set_command_joypad_binding("action", nil)
+  self:set_command_joypad_binding("attack", nil)
+  self:set_command_joypad_binding("item_1", "a")
+  self:set_command_joypad_binding("item_2", "b")
+  self:set_command_joypad_binding("right", "dpad_right")
+  self:set_command_joypad_binding("up", "dpad_up")
+  self:set_command_joypad_binding("left", "dpad_left")
+  self:set_command_joypad_binding("down", "dpad_down")
   for k, v1 in pairs(config) do
     for _, v2 in ipairs(v1) do
       self:add_effect(k, v2)
